@@ -1,0 +1,9 @@
+*.log
+*.mid
+*.midi
+*.pdf
+*.ps
+
+/out/
+
+Copy*
