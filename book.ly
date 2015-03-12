@@ -10,16 +10,30 @@
 \include "out/thirteenthNotes.ily"
 
 printableSole = {
-  \new Staff \with {
-    \remove "Time_signature_engraver"
-  } {
+  \new Staff {
     \clef "bass^8"
     \time 6/1
     \note
     \bar "|."
   }
 }
-
+midiSole = {
+  \tempo 1 = 54
+  \note
+}
+\book {
+% LilyPond needs the printed and MIDI book names to differ.
+  \bookOutputName "out/thirteenth-sole"
+  \score {
+    \new GrandStaff \with {
+      midiInstrument       = #"clarinet"
+    } <<
+      \midiSole
+    >>
+    \midi {
+    }
+  }
+}
 \book {
   \bookOutputName "out/thirteenth"
   \header {
@@ -38,8 +52,17 @@ printableSole = {
     top-margin = 5\mm
     bottom-margin = 5\mm % Printer minimum: 5 mm.
     #(include-special-characters) % Copyright symbol.
+    indent = 0\mm % First system.
   }
   \score {
+    \layout {
+      \context { \Staff
+        \remove "Time_signature_engraver"
+      }
+      \context { \Voice
+       \remove "Dynamic_engraver"
+      }
+    }
     \printableSole
   }
 }
