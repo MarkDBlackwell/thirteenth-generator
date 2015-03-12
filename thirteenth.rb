@@ -73,7 +73,7 @@ CHORAL_RANGE_HIGHEST = 28 # Note A5.
 
 EXTREME_CHORAL_RANGE = CHORAL_RANGE_LOWEST..CHORAL_RANGE_HIGHEST
 
-MIDDLE_C = 16
+G_ABOVE_MIDDLE_C = 20
 
 SCALE_LENGTH = 7
 
@@ -200,19 +200,19 @@ end
 print 'NOT_TOO_MANY_SECONDS.length='
 p      NOT_TOO_MANY_SECONDS.length
 
-NO_GAPS_OVER_MIDDLE_C_GREATER_THAN_AN_OCTAVE = NOT_TOO_MANY_SECONDS.select do |chord|
+NO_GAPS_TOO_HIGH_GREATER_THAN_AN_OCTAVE = NOT_TOO_MANY_SECONDS.select do |chord|
   bad_gaps_contained = chord.each_cons(PAIR).map do |pair|
     exceeds_octave = pair.last - pair.first > SCALE_LENGTH
-    under_middle_c = pair.first < MIDDLE_C
-    (exceeds_octave && ! under_middle_c) ? true : nil
+    too_high = pair.last < G_ABOVE_MIDDLE_C
+    (exceeds_octave && ! too_high) ? true : nil
   end.compact
   bad_gaps_contained.empty?
 end
 
-print 'NO_GAPS_OVER_MIDDLE_C_GREATER_THAN_AN_OCTAVE.length='
-p      NO_GAPS_OVER_MIDDLE_C_GREATER_THAN_AN_OCTAVE.length
+print 'NO_GAPS_TOO_HIGH_GREATER_THAN_AN_OCTAVE.length='
+p      NO_GAPS_TOO_HIGH_GREATER_THAN_AN_OCTAVE.length
 
-GOOD_CHORDS = NO_GAPS_OVER_MIDDLE_C_GREATER_THAN_AN_OCTAVE.map{|e| Chord.new e}
+GOOD_CHORDS = NO_GAPS_TOO_HIGH_GREATER_THAN_AN_OCTAVE.map{|e| Chord.new e}
 
 GOOD_CHORDS_SORTED = GOOD_CHORDS.sort do |a,b|
   by_highest_pitch = a.highest_pitch_octaveless <=> b.highest_pitch_octaveless
